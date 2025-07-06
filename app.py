@@ -11,7 +11,7 @@ load_dotenv()
 app = Flask(__name__)
 app.secret_key = os.getenv("FLASK_SECRET_KEY")
 
-# ✅ Recommended session cookie settings for production
+# ✅ Recommended session cookie settings for production (required for Azure HTTPS)
 app.config.update(
     SESSION_COOKIE_NAME='flask_session',
     SESSION_COOKIE_DOMAIN=None,
@@ -55,8 +55,8 @@ def callback():
 
     # ✅ Log successful login
     app.logger.info(
-    f"PROTECTED_ACCESS: user_id={session['user'].get('sub')}, email={session['user'].get('email')}, timestamp={datetime.utcnow().isoformat()}"
-)
+        f"LOGIN_SUCCESS: user_id={userinfo.get('sub')}, email={userinfo.get('email')}, timestamp={datetime.utcnow().isoformat()}"
+    )
 
     return redirect('/dashboard')
 
@@ -85,7 +85,7 @@ def protected():
         return redirect('/login')
 
     app.logger.info(
-        f"PROTECTED_ACCESS: user_id={session["user"].get("sub")}, email={session["user"].get("email")}, timestamp={datetime.utcnow().isoformat()}"
+        f"PROTECTED_ACCESS: user_id={session['user'].get('sub')}, email={session['user'].get('email')}, timestamp={datetime.utcnow().isoformat()}"
     )
     return "This is a protected page for logged-in users only."
 
