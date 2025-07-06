@@ -11,12 +11,12 @@ load_dotenv()
 app = Flask(__name__)
 app.secret_key = os.getenv("FLASK_SECRET_KEY")
 
-# ✅ Recommended session cookie settings for local Auth0 testing
+# ✅ Recommended session cookie settings for production
 app.config.update(
     SESSION_COOKIE_NAME='flask_session',
     SESSION_COOKIE_DOMAIN=None,
-    SESSION_COOKIE_SAMESITE='Lax',
-    SESSION_COOKIE_SECURE=False
+    SESSION_COOKIE_SAMESITE='None',
+    SESSION_COOKIE_SECURE=True
 )
 
 # ✅ Configure structured logging
@@ -50,7 +50,7 @@ def login():
 @app.route('/callback')
 def callback():
     token = auth0.authorize_access_token()
-    userinfo = token['userinfo']
+    userinfo = token.get('userinfo')
     session['user'] = userinfo
 
     # ✅ Log successful login
@@ -72,7 +72,7 @@ def dashboard():
 def logout():
     session.clear()
     return redirect(
-        f'https://{os.getenv("AUTH0_DOMAIN")}/v2/logout?returnTo=http://localhost:5000&client_id={os.getenv("AUTH0_CLIENT_ID")}'
+        f'https://{os.getenv("AUTH0_DOMAIN")}/v2/logout?returnTo={os.getenv("APP_BASE_URL")}&client_id={os.getenv("AUTH0_CLIENT_ID")}'
     )
 
 
@@ -85,7 +85,7 @@ def protected():
         return redirect('/login')
 
     app.logger.info(
-        f"PROTECTED_ACCESS: user_id={session['user'].get('sub')}, email={session['user'].get('email')}, timestamp={datetime.utcnow().isoformat()}"
+        f"PROTECTED_ACCESS: user_id={session["user"].get("sub")}, email={session["user"].get("email")}, timestamp={datetime.utcnow().isoformat()}"
     )
     return "This is a protected page for logged-in users only."
 
@@ -99,4 +99,4 @@ def unauthorized_error(e):
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)
