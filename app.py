@@ -55,8 +55,8 @@ def callback():
 
     # ✅ Log successful login
     app.logger.info(
-        f"LOGIN_SUCCESS: user_id={userinfo.get('sub')}, email={userinfo.get('email')}, timestamp={datetime.utcnow().isoformat()}"
-    )
+    f"PROTECTED_ACCESS: user_id={session['user'].get('sub')}, email={session['user'].get('email')}, timestamp={datetime.utcnow().isoformat()}"
+)
 
     return redirect('/dashboard')
 
