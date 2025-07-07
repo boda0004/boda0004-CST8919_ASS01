@@ -28,9 +28,9 @@ This README documents the steps to deploy a Flask web app with Auth0 authenticat
 
 ---
 
-## 🚀 1️⃣ Local Development
+## Local Development
 
-✅ Clone your repo:
+ Clone your repo:
 
 ```bash
 git clone https://github.com/YOUR_USERNAME/YOUR_REPO.git
@@ -147,7 +147,7 @@ APP_BASE_URL
 ```
 
 # Diagnostic Logs to Log Analytics
-✅ In Azure Portal:
+In Azure Portal:
 
 App Service > Diagnostic Settings
 
@@ -175,7 +175,7 @@ AppServiceConsoleLogs
 | project user_id, AccessCount
 
 # Azure Alerts
-✅ Alert Rule:
+Alert Rule:
 
 Scope: Log Analytics Workspace
 
@@ -190,3 +190,4 @@ Action Group: Email or SMS
 Result: Get notified when a user abuses /protected route.
 
 
+# Demo Video 
